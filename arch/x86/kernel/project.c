@@ -9,6 +9,7 @@
 
 #define __STDOUT 1
 #define BUF_SIZE 200
+#define STACK_SIZE BUF_SIZE
 
 asmlinkage int sys_project(long pid) {
 
@@ -91,13 +92,20 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * pathname
 			 */
+			size_t i = 0;
+			size_t stack_len = 0;
+			char *dir_stack[STACK_SIZE];
 			struct dentry *dir = f_path->dentry;
 			struct qstr *d_name = &dir->d_name;
 			while(dir != dir->d_parent){
 				d_name = &dir->d_name;
-				len += snprintf(buf + len, BUF_SIZE - len, " %s", d_name->name);
+				dir_stack[stack_len++] = d_name->name;
 				dir = dir->d_parent;
 			}
+			len += snprintf(buf + len, BUF_SIZE - len, "\t\t\t");
+			for(i = 0; i < stack_len; i++) {
+				len += snprintf(buf + len, BUF_SIZE - len, "/%s", dir_stack[i]);
+			}	
 		}
 		else {
 			/*
