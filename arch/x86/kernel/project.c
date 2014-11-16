@@ -79,7 +79,7 @@ asmlinkage int sys_project(long pid) {
 			struct block_device *s_bdev = mnt_sb->s_bdev;
 			struct gendisk *bd_disk = s_bdev->bd_disk;
 
-			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, s_bdev->bd_dev);
+			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, s_bdev->bd_dev & 0xff);
 
 			/*
 			 * inode
