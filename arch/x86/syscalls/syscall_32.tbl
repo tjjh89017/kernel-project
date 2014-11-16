@@ -358,4 +358,4 @@
 349	i386	kcmp			sys_kcmp
 350	i386	finit_module		sys_finit_module
 
-500 i386	project		sys_project
+500	i386	project		sys_project
