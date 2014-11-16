@@ -92,7 +92,6 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * pathname
 			 */
-			size_t i = 0;
 			size_t stack_len = 0;
 			char *dir_stack[STACK_SIZE];
 			struct dentry *dir = f_path->dentry;
@@ -102,9 +101,9 @@ asmlinkage int sys_project(long pid) {
 				dir_stack[stack_len++] = d_name->name;
 				dir = dir->d_parent;
 			}
-			len += snprintf(buf + len, BUF_SIZE - len, "\t\t\t");
-			for(i = 0; i < stack_len; i++) {
-				len += snprintf(buf + len, BUF_SIZE - len, "/%s", dir_stack[i]);
+			len += snprintf(buf + len, BUF_SIZE - len, "\t");
+			for(; stack_len > 0; stack_len--) {
+				len += snprintf(buf + len, BUF_SIZE - len, "/%s", dir_stack[stack_len - 1]);
 			}	
 		}
 		else {
