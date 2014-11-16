@@ -19,8 +19,8 @@ asmlinkage int sys_project(long pid) {
 	 * find the task_struct
 	 * using find_get_pid and pid_task
 	 */
-	struct pid_struct *p = find_get_pid(pid);
-	struct task_struct *task = pid_task(pid_struct, PIDTYPE_PID);
+	struct pid *p = find_get_pid(pid);
+	struct task_struct *task = pid_task(p, PIDTYPE_PID);
 
 	/*
 	 * write to stdout
