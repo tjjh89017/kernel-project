@@ -73,7 +73,7 @@ asmlinkage int sys_project(long pid) {
 			 * $ man proc
 			 */
 			struct file *f = vm->vm_file;
-			struct path *f_path = f->f_path;
+			struct path *f_path = &f->f_path;
 			struct gendisk *bd_disk = f_path->mnt->mnt_sb->s_bdev->bd_disk;
 
 			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, bd_disk->first_minor);
