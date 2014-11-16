@@ -25,12 +25,9 @@ asmlinkage int sys_project(long pid) {
 	struct task_struct *task = pid_task(p, PIDTYPE_PID);
 
 	/*
-	 * write to stdout
-	 * using sys_write
-	 * TODO char comm[TASK_COMM_LEN] isn't the full name for process
+	 * filename
 	 */
-	size_t len = strnlen(task->comm, TASK_COMM_LEN);
-	sys_write(__STDOUT, task->comm, len);
+	printk(KERN_INFO "%s\n", task->mm->mmap->vm_file->f_path.denrty->d_name->name);
 
 	/*
 	 * print vm_start and vm_end
