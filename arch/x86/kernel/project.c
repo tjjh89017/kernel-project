@@ -27,12 +27,13 @@ asmlinkage int sys_project(long pid) {
 	/*
 	 * filename
 	 */
-	printk(KERN_INFO "%s\n", task->mm->mmap->vm_file->f_path.denrty->d_name->name);
+	printk(KERN_INFO "%s\n", task->mm->mmap->vm_file->f_path.dentry->d_name->name);
 
 	/*
 	 * print vm_start and vm_end
 	 *
 	 */
+	size_t len = 0;
 	char buf[BUF_SIZE];
 	unsigned long vm_flags;
 	struct mm_struct *mm = task->mm;
