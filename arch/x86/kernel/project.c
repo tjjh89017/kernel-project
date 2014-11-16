@@ -35,7 +35,6 @@ asmlinkage int sys_project(long pid) {
 	 *
 	 */
 	char buf[BUF_SIZE];
-	size_t len = 0;
 	unsigned long vm_flags;
 	struct mm_struct *mm = task->mm;
 	struct vm_area_struct *vm = mm->mmap;
