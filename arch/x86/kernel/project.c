@@ -50,10 +50,28 @@ asmlinkage int sys_project(long pid) {
 
 		/*
 		 * permission
+		 * r read
+		 * w write
+		 * x execute
+		 * s shared
+		 * p private
 		 */
-		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_READ ? 'r' : '-'));
-		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_WRITE ? 'w' : '-'));
-		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
+		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_READ ? 'r' : '-'));
+		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_WRITE ? 'w' : '-'));
+		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
+		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_SHARED ? 's' : 'p'));
+
+		/*
+		 * offset
+		 */
+		len += snprintf(buf + len, BUF_SIZE - len, " %08x", vm->vm_pgoff);
+
+		/*
+		 * device
+		 * TODO don't know what 'device' is.
+		 * $ man proc
+		 */
+		len += snprintf(buf + len, BUF_SIZE - len, " %2x:%2x", 0, 0);
 
 		printk(KERN_INFO "%s\n", buf);
 		vm = vm->vm_next;
