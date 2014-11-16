@@ -93,7 +93,7 @@ asmlinkage int sys_project(long pid) {
 			 * pathname
 			 */
 			size_t stack_len = 0;
-			char *dir_stack[STACK_SIZE];
+			const unsigned char *dir_stack[STACK_SIZE];
 			struct dentry *dir = f_path->dentry;
 			struct qstr *d_name = &dir->d_name;
 			while(dir != dir->d_parent){
