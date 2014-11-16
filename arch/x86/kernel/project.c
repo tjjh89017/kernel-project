@@ -77,7 +77,7 @@ asmlinkage int sys_project(long pid) {
 			struct inode *inode = f_path->dentry->d_inode;
 			dev_t dev = inode->i_sb->s_dev;
 
-			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, MAJOR(dev), MINOR(dev));
+			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, MAJOR(dev), MINOR(dev) & 0xff);
 
 			/*
 			 * inode
