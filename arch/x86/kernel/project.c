@@ -112,19 +112,21 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * heap, stack or vdso
 			 */
-			if(vm->vm_start == mm->start_brk && vm->vm_end == mm->brk) {
-				/*
-				 * heap
-				 */
-				len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
+			if(vm->vm_mm) {
+				if(vm->vm_end == mm->brk) {
+					/*
+					 * heap
+					 */
+					len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
+				}
+				else if(vm->vm_start <= mm->start_stack && vm->vm_end >= mm->start_stack) {
+					/*
+					 * stack
+					 */
+					len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
+				}
 			}
-			else if(vm->vm_start == mm->start_stack) {
-				/*
-				 * stack
-				 */
-				len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
-			}
-			else if(!vm->vm_mm) {
+			else {
 				/*
 				 * vdso
 				 */
