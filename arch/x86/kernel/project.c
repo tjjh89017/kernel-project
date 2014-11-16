@@ -27,7 +27,7 @@ asmlinkage int sys_project(long pid) {
 	/*
 	 * filename
 	 */
-	printk(KERN_INFO "%s\n", task->mm->mmap->vm_file->f_path.dentry->d_name->name);
+	printk(KERN_INFO "%s\n", task->mm->mmap->vm_file->f_path.dentry->d_name.name);
 
 	/*
 	 * print vm_start and vm_end
