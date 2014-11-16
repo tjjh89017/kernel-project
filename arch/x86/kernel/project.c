@@ -46,7 +46,7 @@ asmlinkage int sys_project(long pid) {
 		/*
 		 * linear address from vm_start to vm_end
 		 */
-		len += snprintf(buf + len, BUF_SIZE - len, "%8x-%8x ", vm->vm_start, vm->vm_end);
+		len += snprintf(buf + len, BUF_SIZE - len, "%08x-%08x ", vm->vm_start, vm->vm_end);
 
 		/*
 		 * permission
@@ -54,7 +54,6 @@ asmlinkage int sys_project(long pid) {
 		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_READ ? 'r' : '-'));
 		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_WRITE ? 'w' : '-'));
 		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
-		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_SHARED ? 'p' : '-'));
 
 		printk(KERN_INFO "%s\n", buf);
 		vm = vm->vm_next;
