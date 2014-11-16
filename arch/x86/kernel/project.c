@@ -111,6 +111,10 @@ asmlinkage int sys_project(long pid) {
 			 * offset, device and inode
 			 */
 			len += snprintf(buf + len, BUF_SIZE - len, " 00000000 00:00 0");
+
+			/*
+			 * heap, stack or vdso
+			 */
 		}
 
 		printk(KERN_INFO "%s\n", buf);
