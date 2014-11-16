@@ -7,7 +7,12 @@
 #define __STDOUT 1
 
 asmlinkage int sys_project(long pid) {
-	
+
+	/*
+	 * make sure the sys_project be called
+	 */
+	printk(KERN_EMERG "Hello Linux Project");
+
 	/*
 	 * TODO find a better way to replace it.
 	 * using pid to find task_struct
