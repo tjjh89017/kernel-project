@@ -71,7 +71,7 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * device
 			 * TODO don't know what 'device' is.
-			 * $ man proc
+			 * still some problem here
 			 */
 			struct file *f = vm->vm_file;
 			struct path *f_path = &f->f_path;
