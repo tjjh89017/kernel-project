@@ -46,7 +46,7 @@ asmlinkage int sys_project(long pid) {
 		/*
 		 * linear address from vm_start to vm_end
 		 */
-		len += snprintf(buf + len, BUF_SIZE - len, "%08x-%08x ", vm->vm_start, vm->vm_end);
+		len += snprintf(buf + len, BUF_SIZE - len, "%08lx-%08lx ", vm->vm_start, vm->vm_end);
 
 		/*
 		 * permission
@@ -64,7 +64,7 @@ asmlinkage int sys_project(long pid) {
 		/*
 		 * offset
 		 */
-		len += snprintf(buf + len, BUF_SIZE - len, " %08x", vm->vm_pgoff);
+		len += snprintf(buf + len, BUF_SIZE - len, " %08lx", vm->vm_pgoff);
 
 		/*
 		 * device
