@@ -46,7 +46,7 @@ asmlinkage int sys_project(long pid) {
 		/*
 		 * linear address from vm_start to vm_end
 		 */
-		len += snprintf(buf + len, BUF_SIZE - len, "%lu-%lu ", vm->vm_start, vm->vm_end);
+		len += snprintf(buf + len, BUF_SIZE - len, "%x-%x ", vm->vm_start, vm->vm_end);
 
 		/*
 		 * permission
