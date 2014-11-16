@@ -118,13 +118,13 @@ asmlinkage int sys_project(long pid) {
 				 */
 				len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
 			}
-			else if(vm->start == mm->start_stack) {
+			else if(vm->vm_start == mm->start_stack) {
 				/*
 				 * stack
 				 */
 				len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
 			}
-			else if(!vm->vmmm) {
+			else if(!vm->vm_mm) {
 				/*
 				 * vdso
 				 */
