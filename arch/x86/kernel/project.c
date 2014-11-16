@@ -92,7 +92,11 @@ asmlinkage int sys_project(long pid) {
 			 */
 			struct dentry *dir = f_path->dentry;
 			struct qstr *d_name = &dir->d_name;
-			len += snprintf(buf + len, BUF_SIZE - len, " %s", d_name->name);
+			while(dir != dir->d_parent){
+				d_name = &dir->d_name;
+				len += snprintf(buf + len, BUF_SIZE - len, " %s", d_name->name);
+				dir = dir->d_parent;
+			}
 		}
 		else {
 			/*
