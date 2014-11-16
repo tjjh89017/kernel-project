@@ -66,12 +66,30 @@ asmlinkage int sys_project(long pid) {
 		 */
 		len += snprintf(buf + len, BUF_SIZE - len, " %08lx", vm->vm_pgoff);
 
-		/*
-		 * device
-		 * TODO don't know what 'device' is.
-		 * $ man proc
-		 */
-		len += snprintf(buf + len, BUF_SIZE - len, " %2x:%2x", 0, 0);
+		if(vm->vm_file) {
+			/*
+			 * device
+			 * TODO don't know what 'device' is.
+			 * $ man proc
+			 */
+			struct file *f = vm->vm_file;
+			struct path *f_path = f->f_path;
+			struct gendisk *bd_disk = f_path->mnt->mnt_sb->s_bdev->bd_disk;
+
+			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, bd_disk->first_minor);
+
+			/*
+			 * inode
+			 * TODO I don't know I choose the right value for it
+			 */
+			len += snprintf(buf + len, BUF_SIZE - len, " %lu", f->f_inode->i_ino);
+		}
+		else {
+			/*
+			 * device and inode
+			 */
+			len += snprintf(buf + len, BUF_SIZE - len, " 00:00 0");
+		}
 
 		printk(KERN_INFO "%s\n", buf);
 		vm = vm->vm_next;
