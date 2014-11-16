@@ -74,7 +74,10 @@ asmlinkage int sys_project(long pid) {
 			 */
 			struct file *f = vm->vm_file;
 			struct path *f_path = &f->f_path;
-			struct gendisk *bd_disk = f_path->mnt->mnt_sb->s_bdev->bd_disk;
+			struct vfsmount *mnt = f_path->mnt;
+			struct super_block *mnt_sb = mnt->mnt_sb;
+			struct block_device *s_bdev = mnt_sb->s_bdev;
+			struct gendisk *bd_disk = s_bdev->bd_disk;
 
 			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, bd_disk->first_minor);
 
