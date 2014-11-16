@@ -11,7 +11,7 @@ asmlinkage int sys_project(long pid) {
 	/*
 	 * make sure the sys_project be called
 	 */
-	printk(KERN_EMERG "Hello Linux Project");
+	printk(KERN_INFO "Hello Linux Project\n");
 
 	/*
 	 * TODO find a better way to replace it.
