@@ -66,7 +66,7 @@ asmlinkage int sys_project(long pid) {
 		/*
 		 * offset
 		 */
-		len += snprintf(buf + len, BUF_SIZE - len, " %08lx", vm->vm_pgoff);
+		len += snprintf(buf + len, BUF_SIZE - len, " %lx", vm->vm_pgoff);
 
 		if(vm->vm_file) {
 			/*
@@ -81,7 +81,7 @@ asmlinkage int sys_project(long pid) {
 			struct block_device *s_bdev = mnt_sb->s_bdev;
 			struct gendisk *bd_disk = s_bdev->bd_disk;
 
-			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, bd_disk->first_minor);
+			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, bd_disk->minors);
 
 			/*
 			 * inode
