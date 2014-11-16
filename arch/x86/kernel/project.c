@@ -3,7 +3,7 @@
 #include <linux/sched.h>
 #include <linux/string.h>
 
-#define __STDOUT
+#define __STDOUT 1
 
 asmlinkage int sys_project(long pid) {
 	
