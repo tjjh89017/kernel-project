@@ -57,7 +57,7 @@ asmlinkage int sys_project(long pid) {
 		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_SHARED ? 'p' : '-'));
 
 		printk(KERN_INFO "%s\n", buf);
-		vm = vm->next;
+		vm = vm->vm_next;
 	}
 
 	return 1;
