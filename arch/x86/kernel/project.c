@@ -7,7 +7,6 @@
 #include <linux/mount.h>
 #include <linux/genhd.h>
 
-#define __STDOUT 1
 #define BUF_SIZE 200
 #define STACK_SIZE BUF_SIZE
 
