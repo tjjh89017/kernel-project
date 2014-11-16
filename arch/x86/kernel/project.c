@@ -3,8 +3,10 @@
 #include <linux/sched.h>
 #include <linux/string.h>
 #include <linux/syscalls.h>
+#include <linux/pid.h>
 
 #define __STDOUT 1
+#define BUF_SIZE 200
 
 asmlinkage int sys_project(long pid) {
 
@@ -14,10 +16,11 @@ asmlinkage int sys_project(long pid) {
 	printk(KERN_INFO "Hello Linux Project\n");
 
 	/*
-	 * TODO find a better way to replace it.
-	 * using pid to find task_struct
+	 * find the task_struct
+	 * using find_get_pid and pid_task
 	 */
-	struct task_struct *task = current;
+	struct pid_struct *p = find_get_pid(pid);
+	struct task_struct *task = pid_task(pid_struct, PIDTYPE_PID);
 
 	/*
 	 * write to stdout
@@ -26,6 +29,36 @@ asmlinkage int sys_project(long pid) {
 	 */
 	size_t len = strnlen(task->comm, TASK_COMM_LEN);
 	sys_write(__STDOUT, task->comm, len);
+
+	/*
+	 * print vm_start and vm_end
+	 *
+	 */
+	char buf[BUF_SIZE];
+	size_t len = 0;
+	unsigned long vm_flags;
+	struct mm_struct *mm = task->mm;
+	struct vm_area_struct *vm = mm->mmap;
+
+	while(vm) {
+		len = 0;
+		vm_flags = vm->vm_flags;
+
+		/*
+		 * linear address from vm_start to vm_end
+		 */
+		len += snprintf(buf + len, BUF_SIZE - len, "%lu-%lu ", vm->vm_start, vm->vm_end);
+
+		/*
+		 * permission
+		 */
+		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_READ ? 'r' : '-'));
+		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_WRITE ? 'w' : '-'));
+		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
+		len += snprintf(buf + len, BUF_SIZE, "%c", (vm_flags & VM_SHARED ? 'p' : '-'));
+
+		printk(KERN_INFO "%s\n", buf);
+	}
 
 	return 1;
 }
