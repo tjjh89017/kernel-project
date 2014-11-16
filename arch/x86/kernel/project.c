@@ -2,6 +2,7 @@
 #include <linux/linkage.h>
 #include <linux/sched.h>
 #include <linux/string.h>
+#include <linux/syscalls.h>
 
 #define __STDOUT 1
 
