@@ -74,19 +74,17 @@ asmlinkage int sys_project(long pid) {
 			 */
 			struct file *f = vm->vm_file;
 			struct path *f_path = &f->f_path;
-			struct vfsmount *mnt = f_path->mnt;
-			struct super_block *mnt_sb = mnt->mnt_sb;
-			struct block_device *s_bdev = mnt_sb->s_bdev;
-			struct gendisk *bd_disk = s_bdev->bd_disk;
+			struct inode *inode = f_path->dentry->d_inode;
+			dev_t dev = inode->i_sb->s_dev;
 
-			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, bd_disk->major, s_bdev->bd_dev & 0xff);
+			len += snprintf(buf + len, BUF_SIZE - len, " %02x:%02x"	, MAJOR(dev), MINOR(dev));
 
 			/*
 			 * inode
 			 * TODO I don't know I choose the right value for it.
 			 * From the result of test, I think I found the right value for it.
 			 */
-			len += snprintf(buf + len, BUF_SIZE - len, " %lu", f->f_inode->i_ino);
+			len += snprintf(buf + len, BUF_SIZE - len, " %lu", inode->i_ino);
 
 			/*
 			 * pathname
@@ -103,7 +101,7 @@ asmlinkage int sys_project(long pid) {
 			len += snprintf(buf + len, BUF_SIZE - len, "\t");
 			for(; stack_len > 0; stack_len--) {
 				len += snprintf(buf + len, BUF_SIZE - len, "/%s", dir_stack[stack_len - 1]);
-			}	
+			}
 		}
 		else {
 			/*
@@ -114,6 +112,24 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * heap, stack or vdso
 			 */
+			if(vm->vm_start == mm->start_brk && vm->vm_end == mm->brk) {
+				/*
+				 * heap
+				 */
+				len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
+			}
+			else if(vm->start == mm->start_stack) {
+				/*
+				 * stack
+				 */
+				len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
+			}
+			else if(!vm->vmmm) {
+				/*
+				 * vdso
+				 */
+				len += snprintf(buf + len, BUF_SIZE - len, "\t[vdso]");
+			}
 		}
 
 		printk(KERN_INFO "%s\n", buf);
