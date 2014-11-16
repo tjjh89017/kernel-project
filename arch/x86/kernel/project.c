@@ -85,9 +85,22 @@ asmlinkage int sys_project(long pid) {
 
 			/*
 			 * inode
-			 * TODO I don't know I choose the right value for it
+			 * TODO I don't know I choose the right value for it.
+			 * From the result of test, I think I found the right value for it.
 			 */
 			len += snprintf(buf + len, BUF_SIZE - len, " %lu", f->f_inode->i_ino);
+
+			/*
+			 * pathname
+			 */
+			struct dentry *dir = f_path->dentry;
+			struct qstr *d_name = dir->d_name;
+			while(dir) {
+				d_name = dir->d_name;
+				len += snprintf(buf + len, BUF_SIZE - len, " %s", d_name->name);
+
+				dir = dir->d_parent;
+			}
 		}
 		else {
 			/*
