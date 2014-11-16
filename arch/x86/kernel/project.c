@@ -5,6 +5,7 @@
 #include <linux/syscalls.h>
 #include <linux/pid.h>
 #include <linux/mount.h>
+#include <linux/fs.h>
 
 #define __STDOUT 1
 #define BUF_SIZE 200
