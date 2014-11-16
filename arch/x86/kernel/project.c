@@ -18,7 +18,7 @@ asmlinkage int sys_project(long pid) {
 	 * using sys_write
 	 * TODO char comm[TASK_COMM_LEN] isn't the full name for process
 	 */
-	size_t len = strnlen(comm, TASK_COMM_LEN);
+	size_t len = strnlen(task->comm, TASK_COMM_LEN);
 	sys_write(__STDOUT, task->comm, len);
 
 	return 1;
