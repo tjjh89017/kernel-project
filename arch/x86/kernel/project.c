@@ -4,6 +4,7 @@
 #include <linux/string.h>
 #include <linux/syscalls.h>
 #include <linux/pid.h>
+#include <linux/mount.h>
 
 #define __STDOUT 1
 #define BUF_SIZE 200
