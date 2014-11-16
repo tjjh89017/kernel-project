@@ -63,12 +63,12 @@ asmlinkage int sys_project(long pid) {
 		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
 		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_SHARED ? 's' : 'p'));
 
-		/*
-		 * offset
-		 */
-		len += snprintf(buf + len, BUF_SIZE - len, " %lx", vm->vm_pgoff);
-
 		if(vm->vm_file) {
+			/*
+			 * offset
+			 */
+			len += snprintf(buf + len, BUF_SIZE - len, " %08lx", vm->vm_pgoff << 12);
+
 			/*
 			 * device
 			 * TODO don't know what 'device' is.
@@ -91,9 +91,9 @@ asmlinkage int sys_project(long pid) {
 		}
 		else {
 			/*
-			 * device and inode
+			 * offset, device and inode
 			 */
-			len += snprintf(buf + len, BUF_SIZE - len, " 00:00 0");
+			len += snprintf(buf + len, BUF_SIZE - len, " 00000000 00:00 0");
 		}
 
 		printk(KERN_INFO "%s\n", buf);
