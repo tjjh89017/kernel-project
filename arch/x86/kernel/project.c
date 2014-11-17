@@ -148,8 +148,10 @@ asmlinkage int sys_project(long pid) {
 	unsigned long vm_start, vm_end;
 
 	for(; vm; vm = vm->vm_next) {
+		/*
 		if(vm->vm_file || arch_vma_name(vm) || !vm->vm_mm)
 			continue;
+		*/
 
 		printk(KERN_INFO "%08lx-%08lx\n", vm->vm_start, vm->vm_end);
 
