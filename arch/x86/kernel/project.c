@@ -164,7 +164,7 @@ asmlinkage int sys_project(long pid) {
 
 			printk(KERN_INFO "  --> %lx-%lx\n", phy_address, phy_address + PAGE_SIZE);
 		}
-
+		vm = vm->vm_next;
 	}
 
 	return 1;
