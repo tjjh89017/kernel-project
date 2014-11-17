@@ -162,7 +162,7 @@ asmlinkage int sys_project(long pid) {
 			pte = pte_offset_kernel(pmd, vm_start);
 			phy_address = pte_val(*pte);
 
-			printk(KERN_INFO "  --> %lx-%lx\n", phy_address, phy_address + PAGE_SIZE);
+			/*printk(KERN_INFO "  --> %lx-%lx\n", phy_address, phy_address + PAGE_SIZE);*/
 		}
 		vm = vm->vm_next;
 	}
