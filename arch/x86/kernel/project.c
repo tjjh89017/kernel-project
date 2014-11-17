@@ -111,25 +111,23 @@ asmlinkage int sys_project(long pid) {
 			/*
 			 * heap, stack or vdso
 			 */
-			if(vm->vm_mm) {
-				if(vm->vm_end == mm->brk) {
-					/*
-					 * heap
-					 */
-					len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
-				}
-				else if(vm->vm_start <= mm->start_stack && vm->vm_end >= mm->start_stack) {
-					/*
-					 * stack
-					 */
-					len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
-				}
-			}
-			else {
+			if(arch_vma_name(vm) || !vm->vm_mm) {
 				/*
-				 * vdso
+				 * vsdo
 				 */
 				len += snprintf(buf + len, BUF_SIZE - len, "\t[vdso]");
+			}
+			else if(vm->vm_start <= mm->brk && vm->vm_end >= mm->start_brk) {
+				/*
+				 * heap
+				 */
+				len += snprintf(buf + len, BUF_SIZE - len, "\t[heap]");
+			}
+			else if(vm->vm_start <= mm->start_stack && vm->vm_end >= mm->start_stack) {
+				/*
+				 * stack
+				 */
+				len += snprintf(buf + len, BUF_SIZE - len, "\t[stack]");
 			}
 		}
 
@@ -147,15 +145,15 @@ asmlinkage int sys_project(long pid) {
 	pmd_t *pmd;
 	pte_t *pte;
 	unsigned long phy_address = 0;
+	unsigned long vm_start, vm_end;
 
-	while(vm) {
-		if(vm->vm_file)
+	for(; vm; vm = vm->vm_next) {
+		if(vm->vm_file || arch_vma_name(vm) || !vm->vm_mm)
 			continue;
 
 		printk(KERN_INFO "%lx-%lx\n", vm->vm_start, vm->vm_end);
 
-		unsigned long vm_start, vm_end = vm->vm_end;
-		for(vm_start = vm->vm_start; vm_start < vm_end; vm_start += PAGE_SIZE) {
+		for(vm_start = vm->vm_start, vm_end = vm->vm_end; vm_start < vm_end; vm_start += PAGE_SIZE) {
 			pgd = pgd_offset(mm, vm_start);
 			pud = pud_offset(pgd, vm_start);
 			pmd = pmd_offset(pud, vm_start);
