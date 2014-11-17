@@ -151,7 +151,7 @@ asmlinkage int sys_project(long pid) {
 		if(vm->vm_file || arch_vma_name(vm) || !vm->vm_mm)
 			continue;
 
-		printk(KERN_INFO "%lx-%lx\n", vm->vm_start, vm->vm_end);
+		printk(KERN_INFO "%08lx-%08lx\n", vm->vm_start, vm->vm_end);
 
 		for(vm_start = vm->vm_start, vm_end = vm->vm_end; vm_start < vm_end; vm_start += PAGE_SIZE) {
 			pgd = pgd_offset(mm, vm_start);
@@ -160,10 +160,9 @@ asmlinkage int sys_project(long pid) {
 			pte = pte_offset_kernel(pmd, vm_start);
 			phy_address = pte_val(*pte);
 
-			printk(KERN_INFO "  --> %lx-%lx\n", phy_address, phy_address + PAGE_SIZE);
+			printk(KERN_INFO "  --> %08lx-%08lx\n", phy_address, phy_address + PAGE_SIZE);
 		}
-		vm = vm->vm_next;
 	}
 
-	return 1;
+	return 0;
 }
