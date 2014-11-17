@@ -4,8 +4,7 @@
 #include <linux/string.h>
 #include <linux/syscalls.h>
 #include <linux/pid.h>
-#include <linux/mount.h>
-#include <linux/genhd.h>
+#include <asm/pgtable.h>
 
 #define BUF_SIZE 200
 #define STACK_SIZE BUF_SIZE
@@ -136,6 +135,36 @@ asmlinkage int sys_project(long pid) {
 
 		printk(KERN_INFO "%s\n", buf);
 		vm = vm->vm_next;
+	}
+
+	/*
+	 * page
+	 * TODO there is some better way to find phyiscal address by reducing 'pgd' calculus
+	 */
+	vm = mm->mmap;
+	pgd_t pgd;
+	pud_t pud;
+	pmd_t pmd;
+	pte_t pte;
+	unsigned long phy_address = 0;
+
+	while(vm) {
+		if(vm->vm_file)
+			continue;
+
+		printk(KERN_INFO "%lx-%lx\n", vm->vm_start, vm->vm_end);
+
+		unsigned long vm_start, vm_end = vm->vm_end;
+		for(vm_start = vm->vm_start; vm_start < vm_end; vm_start += PAGE_SIZE) {
+			pgd = pgd_offset(mm, vm_start);
+			pud = pud_offset(pgd, vm_start);
+			pmd = pmd_offset(pud, vm_start);
+			pte = pte_offset_kernel(pmd, vm_start);
+			phy_address = pte_val(*pte);
+
+			printk(KERN_INFO "  --> %lx-%lx\n", phy_address, phy_address + PAGE_SIZE);
+		}
+
 	}
 
 	return 1;
