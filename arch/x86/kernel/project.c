@@ -142,10 +142,10 @@ asmlinkage int sys_project(long pid) {
 	 * TODO there is some better way to find phyiscal address by reducing 'pgd' calculus
 	 */
 	vm = mm->mmap;
-	pgd_t pgd;
-	pud_t pud;
-	pmd_t pmd;
-	pte_t pte;
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+	pte_t *pte;
 	unsigned long phy_address = 0;
 
 	while(vm) {
