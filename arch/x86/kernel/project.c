@@ -168,3 +168,11 @@ asmlinkage int sys_project(long pid) {
 
 	return 0;
 }
+
+asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
+
+	struct task_struct *task = current;
+
+
+	return 0;
+}
