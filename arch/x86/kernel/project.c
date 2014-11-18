@@ -171,17 +171,30 @@ asmlinkage int sys_project(long pid) {
 
 asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 
-	struct task_struct *task = current;
+	printk(KERN_INFO "Hello Nonwritable\n");
+
+	struct mm_struct *mm = current->mm;
 
 #define RO_MODE (~(unsinged long)2)
+
 	/*
 	 * set the page entry to read-only mode
+	 * make sure begin is the page entry
+	 * we use mask to do
 	 */
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+	pte_t *pte;
 	unsigned long vm_start, vm_end;
-	for(vm_start = begin, vm_end = end; vm_start < vm_end; vm_start += PAGE_SIZE) {
-		
+	for(vm_start = begin & PAGE_MASK, vm_end = end; vm_start < vm_end; vm_start += PAGE_SIZE) {
+		pgd = pgd_offset(mm, vm_start);
+		pud = pud_offset(pgd, vm_start);
+		pmd = pmd_offset(pud, vm_start);
+		pte = pte_offset_kerenl(pmd, vm_start);
+
+		pte->pte &= RO_MODE;
 	}
 
-	printk(KERN_INFO "%08lx\n", RO_MODE);
 	return 0;
 }
