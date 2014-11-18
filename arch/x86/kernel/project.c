@@ -175,7 +175,7 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 
 	struct mm_struct *mm = current->mm;
 
-#define RO_MODE (~(unsinged long)2)
+#define RO_MODE (~(unsigned long)2)
 
 	/*
 	 * set the page entry to read-only mode
@@ -191,7 +191,7 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 		pgd = pgd_offset(mm, vm_start);
 		pud = pud_offset(pgd, vm_start);
 		pmd = pmd_offset(pud, vm_start);
-		pte = pte_offset_kerenl(pmd, vm_start);
+		pte = pte_offset_kernel(pmd, vm_start);
 
 		pte->pte &= RO_MODE;
 	}
