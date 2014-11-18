@@ -359,3 +359,4 @@
 350	i386	finit_module		sys_finit_module
 
 500	i386	project			sys_project
+501	i386	nonwritable		sys_nonwritable
