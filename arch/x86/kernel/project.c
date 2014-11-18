@@ -173,6 +173,15 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 
 	struct task_struct *task = current;
 
+#define RO_MODE (~(unsinged long)2)
+	/*
+	 * set the page entry to read-only mode
+	 */
+	unsigned long vm_start, vm_end;
+	for(vm_start = begin, vm_end = end; vm_start < vm_end; vm_start += PAGE_SIZE) {
+		
+	}
 
+	printk(KERN_INFO "%08lx\n", RO_MODE);
 	return 0;
 }
