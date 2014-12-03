@@ -58,7 +58,7 @@ asmlinkage int sys_project(long pid) {
 		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_READ ? 'r' : '-'));
 		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_WRITE ? 'w' : '-'));
 		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_EXEC ? 'x' : '-'));
-		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_SHARED ? 's' : 'p'));
+		len += snprintf(buf + len, BUF_SIZE - len, "%c", (vm_flags & VM_MAYSHARE ? 's' : 'p'));
 
 		if(vm->vm_file) {
 			/*
@@ -113,7 +113,7 @@ asmlinkage int sys_project(long pid) {
 			 */
 			if(arch_vma_name(vm) || !vm->vm_mm) {
 				/*
-				 * vsdo
+				 * vdso
 				 */
 				len += snprintf(buf + len, BUF_SIZE - len, "\t[vdso]");
 			}
