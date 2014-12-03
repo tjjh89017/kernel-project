@@ -148,10 +148,6 @@ asmlinkage int sys_project(long pid) {
 	unsigned long vm_start, vm_end;
 
 	for(; vm; vm = vm->vm_next) {
-		/*
-		if(vm->vm_file || arch_vma_name(vm) || !vm->vm_mm)
-			continue;
-		*/
 
 		printk(KERN_INFO "%08lx-%08lx\n", vm->vm_start, vm->vm_end);
 
@@ -161,11 +157,30 @@ asmlinkage int sys_project(long pid) {
 			pmd = pmd_offset(pud, vm_start);
 			pte = pte_offset_kernel(pmd, vm_start);
 			phy_address = pte_val(*pte);
-
+			if(!phy_address ) continue ;
 			printk(KERN_INFO "  --> %08lx-%08lx\n", phy_address, phy_address + PAGE_SIZE);
 		}
 	}
 
+/*Another method */
+/*
+	vma = mm->mmap ;
+	unsigned long vm_addr,phy_addr ;
+	struct page *page ;
+
+	while(vma){
+
+		printk(KERN_INFO "%08lx-%08lx\n", vma->vm_start, vma->vm_end);
+		for(vm_addr = vma->vm_start ; vm_addr < vma->vm_end ; vm_addr += PAGE_SIZE){
+			page = follow_page(vma,vm_addr,0) ;
+			if(page == NULL ) continue ;
+			phy_addr = page_to_phys(page) ;
+			printk(KERN_INFO " --> %08lx-%08lx\n", phy_addr, phy_addr + PAGE_SIZE);
+
+		}
+		vma = vma->vm_next ;
+*/
+											                                                                              }i
 	return 0;
 }
 
