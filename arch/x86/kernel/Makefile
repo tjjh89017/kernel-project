@@ -107,6 +107,7 @@ obj-$(CONFIG_PERF_EVENTS)		+= perf_regs.o
 ###
 # for project
 obj-y	+= project.o
+obj-y   += nonwritable.o
 
 ###
 # 64 bit specific files

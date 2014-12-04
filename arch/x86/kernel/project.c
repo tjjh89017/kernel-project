@@ -5,6 +5,7 @@
 #include <linux/syscalls.h>
 #include <linux/pid.h>
 #include <asm/pgtable.h>
+#include <linux/io.h>
 
 #define BUF_SIZE 200
 #define STACK_SIZE BUF_SIZE
@@ -183,7 +184,7 @@ asmlinkage int sys_project(long pid) {
 											                                                                              }i
 	return 0;
 }
-
+/*
 asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 
 	printk(KERN_INFO "Hello Nonwritable\n");
@@ -191,12 +192,13 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 	struct mm_struct *mm = current->mm;
 
 #define RO_MODE (~(unsigned long)2)
-
+*/
 	/*
 	 * set the page entry to read-only mode
 	 * make sure begin is the page entry
 	 * we use mask to do
 	 */
+/*
 	pgd_t *pgd;
 	pud_t *pud;
 	pmd_t *pmd;
@@ -213,3 +215,4 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 
 	return 0;
 }
+*/
