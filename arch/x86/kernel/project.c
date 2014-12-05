@@ -5,6 +5,7 @@
 #include <linux/syscalls.h>
 #include <linux/pid.h>
 #include <asm/pgtable.h>
+#include <linux/highmem.h>
 
 #define BUF_SIZE 200
 #define STACK_SIZE BUF_SIZE
