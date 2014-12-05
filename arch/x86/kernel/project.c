@@ -181,12 +181,12 @@ asmlinkage int sys_project(long pid) {
 
 		}
 		vma = vma->vm_next ;
+	}
 */
-											                                                                              }i
 	return 0;
 }
 
-asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
+asmlinkage int sys_nonwritable(unsigned long begin, unsigned long end) {
 
 	printk(KERN_INFO "Hello Nonwritable\n");
 
@@ -208,7 +208,7 @@ asmlinkage int nonwritable(unsigned long begin, unsigned long end) {
 		pgd = pgd_offset(mm, vm_start);
 		pud = pud_offset(pgd, vm_start);
 		pmd = pmd_offset(pud, vm_start);
-		pte = pte_offset_kernel(pmd, vm_start);
+		pte = pte_offset_map(pmd, vm_start);
 
 		pte->pte &= RO_MODE;
 	}
